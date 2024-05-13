@@ -1,0 +1,29 @@
+
+/* styles.css */
+.input-container {
+  position: relative;
+}
+
+.input-container label {
+  position: absolute;
+  left: 10px;
+  transition: top 0.3s, font-size 0.3s;
+}
+
+.input-container input {
+  padding: 20px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.input-container.focused label {
+  top: -20px;
+  font-size: 12px;
+  transition: ease-in-out 1s;
+}
+
+.input-container.focused input {
+  border-color: #007bff;
+}
