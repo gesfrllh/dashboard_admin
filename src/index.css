@@ -20,6 +20,26 @@
     }
   }
 
+  ::-webkit-scrollbar {
+    width: 3px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    @apply bg-blue-500
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+
+  .textar{
+    resize: none;
+  }
+
 
 .hoverSidebar {
   display: inline-block;

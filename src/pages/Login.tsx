@@ -130,7 +130,7 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
 										? "font-outline-2-orange"
 										: "font-outline-2-blue"
 								} `}>
-								LOREM
+								admin
 							</h1>
 							<h1
 								className={`text-4xl md:borde-r2 lg:text-2xl logo ${
