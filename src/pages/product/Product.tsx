@@ -2,10 +2,14 @@ import React, { useEffect, useState, useRef } from "react";
 import DashboardLayout from "../../components/DashboardLayout";
 import HTTPOFFICE, { FormatIDR } from "../../utils/Api";
 import { CiSearch } from "react-icons/ci";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { TbEditCircle } from "react-icons/tb";
+import { TiDeleteOutline } from "react-icons/ti";
 import { useAuth } from "../../hooks/useAuth";
+import { useNotification } from "../../context/NotificationContext";
 
 interface Product {
+	id: number,
 	name: string;
 	price: number;
 	description: string;
@@ -19,11 +23,14 @@ const Product: React.FC = () => {
 	const [focusedSearch, setFocusedSearch] = useState<boolean>(false);
 	const [searchInput, setSearchInput] = useState<string>("");
 	const searchRef = useRef<HTMLInputElement>(null);
+	const {showNotification} = useNotification();
+	const navigate = useNavigate()
 
 	const productHeader = [
 		{ id: 1, name: "Product Name" },
 		{ id: 2, name: "Price" },
 		{ id: 3, name: "Description" },
+		{ id: 3, name: "Action" },
 	];
 
 	const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,12 +45,35 @@ const Product: React.FC = () => {
 		try {
 			const response = await HTTPOFFICE.get(`api/products?query=${query}`);
 			setData(response.data.data);
-			console.log("Received data:", response); // Debugging line
-
 		} catch (err) {
 			console.log(err);
 		}
 	};
+
+	const handleDelete = async(id: number) => {
+		try {
+			const response = await HTTPOFFICE.delete(`api/products/${id}`);
+			if(response.status === 200){
+				showNotification('Success Data Berhasil Dihapus', 'success')
+				getData('')
+			} else {
+				showNotification('Maaf Data Tidak Berhasil Dihapus', 'error')
+			}
+		} catch(err){
+			showNotification('Server Error', "error")
+		}
+	}
+	
+	const getDetail = async (id: number) => {
+		try {
+			const response = await HTTPOFFICE.get(`api/products/${id}`)
+			if(response.status === 200){
+				navigate(`/add-product/${id}`)
+			}
+		}catch(err){
+			console.error(err)
+		}
+	}
 
 	useEffect(() => {
 		if (user?.token) {
@@ -53,11 +83,6 @@ const Product: React.FC = () => {
 		}
 	}, [user?.token]);
 
-	const handleClickOutside = (event: MouseEvent) => {
-		if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
-			setFocusedSearch(false);
-		}
-	};
 
 	return (
 		<>
@@ -69,8 +94,8 @@ const Product: React.FC = () => {
 								<div>
 									<p>Product</p>
 								</div>
-								<div className="flex items-center">
-									<div ref={searchRef} className={`py-2 border-2 px-4 flex items-center right-10 relative bg-white rounded-lg ${focusedSearch ? "border-2 border-blue-500" : "border-2 border-gray-200"}`}>
+								<div className="flex items-center gap-8">
+									<div ref={searchRef} className={`py-2  px-4 flex items-center right-10 bg-white rounded-lg ${focusedSearch ? "border-2 border-blue-500" : "border-2 border-gray-200"}`}>
 										<input
 											type="text"
 											className="outline-none text-sm"
@@ -112,7 +137,7 @@ const Product: React.FC = () => {
 								</thead>
 								<tbody className="bg-white divide-y divide-gray-200">
 									{data.map((item) => (
-										<tr key={item.name}>
+										<tr key={item.name} >
 											<td className="px-6 py-4 whitespace-nowrap">
 												<div className="flex items-center gap-4">
 													{item.image && (
@@ -126,6 +151,14 @@ const Product: React.FC = () => {
 											</td>
 											<td className="px-6 py-4 whitespace-nowrap">
 												<p className="text-sm font-medium">{item.description}</p>
+											</td>
+											<td className="px-6 py-8 flex whitespace-nowrap  items-center justify-center gap-2">
+												<div className="text-red-500 cursor-pointer">
+													<TiDeleteOutline size={32} onClick={(() => handleDelete(item.id)) }/>
+												</div>
+												<div className="text-blue-500 cursor-pointer">
+													<TbEditCircle size={32} onClick={(() => getDetail(item.id))}/>
+												</div>
 											</td>
 										</tr>
 									))}

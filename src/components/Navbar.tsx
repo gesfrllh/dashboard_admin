@@ -76,7 +76,7 @@ const Navbar: React.FC<NavbarProps> = ({ toggleSideBar, props }) => {
                     </div>
                 </div>
             </div>
-            <div className="px-8 flex flex-col gap-1 relative">
+            <div className="px-8 flex flex-col   gap-1 relative">
                 <div ref={searchRef} className={`py-2 px-4 flex items-center right-10 relative bg-white rounded-lg ${focusedSearch ? "border-2 border-blue-500" : "border-2 border-white"}`}>
                     <input
                         type="text"
@@ -88,8 +88,8 @@ const Navbar: React.FC<NavbarProps> = ({ toggleSideBar, props }) => {
                     <CiSearch color="gray" />
                 </div>
                 {dropdownSearch && (
-                    <div className="absolute right-[72px] w-[210px] bg-white top-12 rounded-lg">
-                        {searchData
+                    <div className="absolute  right-[72px] w-[210px] bg-white top-12 rounded-lg">
+                        {searchData     
                             .filter(item => item.name.toLowerCase().startsWith(searchInput.toLowerCase()))
                             .map((item, id) => (
                                 <div key={id}>
