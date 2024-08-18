@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import DashboardLayout from "../../components/DashboardLayout";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import HTTPOFFICE from "../../utils/Api";
 import { useNotification } from "../../context/NotificationContext";
 
@@ -13,6 +13,7 @@ interface Product {
 }
 
 const AddProduct = () => {
+	const { id } = useParams<{ id: string }>(); // Ambil parameter id dari URL
 	const [imgUrl, setImgUrl] = useState<string>("");
 	const [formData, setFormData] = useState<Product>({
 		name: "",
@@ -28,16 +29,16 @@ const AddProduct = () => {
 		id: null,
 		url: ''
 	})
-	const {showNotification} = useNotification()
+	const { showNotification } = useNotification();
+	const navigate = useNavigate();
 
 	const handleInputChange = (
 		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
 		field: keyof Product
 	) => {
-		if ("price") {
+		if (field === "price") {
 			const value = e.target.value.replace(/\D/g, '');
-
-			const formatValue = parseInt(value)
+			const formatValue = parseInt(value);
 			const formattedValue = new Intl.NumberFormat('id-ID', {
 				style: 'currency',
 				currency: 'IDR',
@@ -72,8 +73,8 @@ const AddProduct = () => {
 				});
 
 				if (response.status === 200) {
-					console.log(response.data)
-					setDataImage(response.data.file)
+					console.log(response.data);
+					setDataImage(response.data.file);
 				}
 			} catch (err) {
 				console.error('Error uploading file:', err);
@@ -81,28 +82,58 @@ const AddProduct = () => {
 		}
 	};
 
-	const navigate = useNavigate();
-
-
 	const handleSubmit = async () => {
-		let dataCustomerId: any = localStorage.getItem('customer')
-		const dataId = JSON.parse(dataCustomerId)
+		let dataCustomerId: any = localStorage.getItem('customer');
+		const dataId = JSON.parse(dataCustomerId);
 		const data = {
 			price: formData.price,
 			name: formData.name,
 			description: formData.description,
 			customerId: dataId.id,
 			image_id: dataImge.id
-		}
+		};
 		try {
-			const response = await HTTPOFFICE.post(`api/products`, data)
-			showNotification('Success data product berhasil ditambahkan!', 'success')
-			navigate('/product')
-			console.log(response)
+			if (id) {
+				const response = await HTTPOFFICE.put(`api/products/${id}`, data);
+				if(response.status === 200){
+					showNotification('Success data product berhasil diubah!', 'success');
+					navigate('/product');
+				} else {
+					showNotification('Maaf Silahkan Periksa Data Anda!', 'error');
+				}
+			} else {
+				const response = await HTTPOFFICE.post(`api/products`, data);
+				if(response.status === 201)
+				showNotification('Success data product berhasil ditambahkan!', 'success');
+				navigate('/product');
+			}
 		} catch (err) {
-			console.log(err)
+			console.log(err);
 		}
-	}
+	};
+
+	const getDetail = async () => {
+		if (id) {
+			try {
+				const response = await HTTPOFFICE.get(`api/products/${id}`);
+				setFormData((prevData) => ({
+					...prevData,
+					name: response.data.name,
+					price: response.data.price,
+					description: response.data.description,
+					image_data: response.data.image
+				}));
+				setImgUrl(response.data.image.url)
+				setDataImage(response.data.image); // Assuming image_data contains the URL
+			} catch (err) {
+				console.log(err);
+			}
+		}
+	};
+
+	useEffect(() => {
+		getDetail();
+	}, [id]); // Depend on `id` so it will refetch when `id` changes
 
 	return (
 		<>
@@ -121,7 +152,6 @@ const AddProduct = () => {
 									clipRule="evenodd"
 								/>
 							</svg>
-
 							<Link to="/product">Product</Link>
 						</div>
 						<div className="flex flex-col py-2  rounded-lg bg-white shadow-lg">
