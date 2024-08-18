@@ -2,6 +2,7 @@ import React, { ReactNode } from "react";
 import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
 import { useClose } from "../hooks/useClose";
+import Notification from "./Notification";
 
 interface Dashboard{
 	children: ReactNode
@@ -17,6 +18,7 @@ const DashboardLayout:React.FC<Dashboard> = ({ children , type}) => {
 				<Sidebar close={open}/>
 				<div className="w-full overflow-hidden bg-gray-100">
 					<Navbar toggleSideBar={setOpen} props={type}/>
+					<Notification />
 					<main className=" h-screen  pt-24">{children}</main>
 				</div>
 			</div>

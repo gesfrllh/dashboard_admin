@@ -57,9 +57,9 @@ const Dashboard: React.FC = () => {
 					{dataDashboard.map((item) => (
 						<div className="h-full flex flex-col gap-4 px-8 py-4" key={item.id}>
 							<div className=" py-1 px-2 w-[200px] font-medium bg-white rounded-lg">
-								<p className="uppercase">{item.name}</p>
+								<p className="uppercase">{item.name || '-'}</p>
 								<p className="text-sm font-medium text-gray-500">
-									{dayOfWeek}, {dayOfMonth} {month} {year}
+									{dayOfWeek}, {dayOfMonth} {month} {year} 
 								</p>
 							</div>
 							<div className="flex gap-8">
@@ -73,7 +73,7 @@ const Dashboard: React.FC = () => {
 										</div>
 										<p className="font-bold text-lg">
 											<span>Rp. </span>
-											{getMaxItem(item.price_per_month)}
+											{getMaxItem(item.price_per_month) || '-'}
 										</p>
 									</div>
 								</div>

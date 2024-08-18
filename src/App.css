@@ -27,3 +27,8 @@
 .input-container.focused input {
   border-color: #007bff;
 }
+
+
+input[type="file"]{
+  color: transparent;
+}
