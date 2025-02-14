@@ -1,4 +1,3 @@
-import React from 'react'
 import DashboardLayout from '../components/DashboardLayout'
 
 const Profile = () => {
@@ -6,7 +5,7 @@ const Profile = () => {
     <>
     <DashboardLayout type='Profile'>
         <main>
-            <div>
+            <div className=''>
                 
             </div>
         </main>

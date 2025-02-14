@@ -20,7 +20,7 @@ export const NotificationProvider: React.FC<{ children: ReactNode }> = ({ childr
     setTimeout(() => {
       setMessage('');
       setType('info');
-    }, 3000); // Hide notification after 3 seconds
+    }, 3000); 
   };
 
   return (

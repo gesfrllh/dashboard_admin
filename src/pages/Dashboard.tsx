@@ -21,7 +21,7 @@ const Dashboard: React.FC = () => {
 
 	const getMaxItem = (price: string[]) => {
 		const priceAsNumbers: number[] = price.map((prices) => parseFloat(prices));
-		return Math.max(...priceAsNumbers);
+		return FormatIDR(Math.max(...priceAsNumbers));
 	};
 
 	const getTotal = (total: number[]) => {
@@ -35,13 +35,12 @@ const Dashboard: React.FC = () => {
 			try {
 				if (user?.token) {
 					const response = await HTTPOFFICE.get(`api/dashboard`, {
-						headers: {
+						headers: { 
 							Authorization: `Bearer ${user.token}`,
 						},
 					});
 					const dashboardData = response.data;
 					setDataDashboard(dashboardData);
-					console.log(dashboardData);
 				}
 			} catch (err) {
 				console.log("Error fetching Dashboard Data:", err);
