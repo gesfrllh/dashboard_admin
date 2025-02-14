@@ -6,7 +6,7 @@ import { useAuth } from "./useAuth";
 // Custom hook for fetching customer data
 export const useCustomers = () => {
     const { user } = useAuth();
-    const [data, setData] = useState<Customers[]>([]);
+    const [data, setData] = useState<Customers>();
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
 
