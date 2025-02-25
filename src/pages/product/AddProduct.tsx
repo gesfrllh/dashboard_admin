@@ -22,7 +22,8 @@ const AddProduct = () => {
     filename: '',
     path: '',
     id: null,
-    url: ''
+    url: '',
+    size : 0
   })
   const { showNotification } = useNotification();
   const navigate = useNavigate();
@@ -74,7 +75,11 @@ const AddProduct = () => {
       }
     }
   };
-
+  const formatFileSize = (size: number) => {
+      if (size < 1024) return `${size} bytes`;
+      else if (size < 1048576) return `${(size / 1024).toFixed(2)} Kb`;
+      else return `${(size / 1048576).toFixed(2)} Mb`;
+  };
   const handleSubmit = async () => {
     let dataCustomerId: any = localStorage.getItem('customer');
     const dataId = JSON.parse(dataCustomerId);
@@ -82,7 +87,7 @@ const AddProduct = () => {
       price: formData.price,
       name: formData.name,
       description: formData.description,
-      customerId: dataId.id,
+      customerId: dataId.customer.id,
       image_id: dataImge.id
     };
     try {
@@ -95,13 +100,17 @@ const AddProduct = () => {
           showNotification('Maaf Silahkan Periksa Data Anda!', 'error');
         }
       } else {
+        console.log(data)
         const response = await HTTPOFFICE.post(`api/products`, data);
-        if (response.status === 201)
+        if (response.status === 201) {
           showNotification('Success data product berhasil ditambahkan!', 'success');
-        navigate('/product');
+          navigate('/product');
+        } else {
+          throw new Error(response.data.errors);
+        }
       }
-    } catch (err) {
-      console.log(err);
+    } catch (err: any) {
+      showNotification(err.response.data.errors, 'error');
     }
   };
 
@@ -183,8 +192,11 @@ const AddProduct = () => {
                   </div>
                   {dataImge.filename && dataImge.url ? (
                     <div className="border-2 p-4 rounded-lg flex gap-4 shadow-lg">
-                      <img src={imgUrl} alt="" className="w-auto rounded-lg h-10" />
-                      <p>{dataImge.filename}</p>
+                      <img src={imgUrl} alt="" className="w-auto h-10" />
+                      <div className="flex flex-col">
+                      <p className="text-sm">{dataImge.filename}</p>
+                      <p className="text-[10px] text-gray-500">{formatFileSize(dataImge.size)}</p>
+                      </div>
                     </div>
                   ) : (
                     <div></div>
@@ -221,7 +233,7 @@ const AddProduct = () => {
                       value={formData.description}
                     />
                   </div>
-                  <div className="flex py-2 justify-center">
+                  <div className="flex py-2 justify-start">
                     <button className="text-white hover:bg-blue-800 px-6 ease-in-out transition-all duration-200 py-2 rounded-lg bg-blue-500" onClick={handleSubmit}>Submit</button>
                   </div>
                 </div>

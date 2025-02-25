@@ -69,7 +69,7 @@ const Navbar: React.FC<NavbarProps> = ({ toggleSideBar, props }) => {
                             <p className="text-red-500">{error}</p>
                         ) : (
                             <div>
-                                <p className="text-xl font-bold uppercase">Hello {data?.name} 👋</p>
+                                <p className="text-xl font-bold uppercase">Hello {data?.customer?.name} 👋</p>
                                 <p className="text-sm text-gray-500">Let's check your {props}!</p>
                             </div>
                         )}

@@ -2,6 +2,16 @@ export interface DeleteModal {
   isOpen: boolean,
   onClose: () => void,
   onDelete: () => void
+  title?: string,
+  desc?: string
+}
+
+export interface Pagination{
+  current_page: number,
+  last_page: number,
+  per_page: number,
+  total: number,
+  onPageChange: () => void
 }
 
 export interface Products {

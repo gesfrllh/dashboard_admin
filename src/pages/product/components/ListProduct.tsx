@@ -16,7 +16,7 @@ interface ListProductProps {
   getDetail: (id: number) => void,
   openModal: boolean,
   setOpenModal: React.Dispatch<React.SetStateAction<boolean>>,
-  setSelectedProductId: React.Dispatch<React.SetStateAction<number | null>>,
+  setSelectedProductId: React.Dispatch<React.SetStateAction<number>>,
 }
 
 const ListProduct: React.FC<ListProductProps> = ({ productHeader, data, handleDelete, getDetail, openModal, setOpenModal, setSelectedProductId }) => {
