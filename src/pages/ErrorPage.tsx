@@ -9,7 +9,7 @@ const ErrorPage: React.FC = () => {
 				<p>Sorry, an uxpected error has occured.</p>
 				<p>
 					<i className="font-bold text-2xl text-red-500">
-                        404
+		                404
 					</i>
 				</p>
 			</div>

@@ -28,18 +28,18 @@ function App() {
 				element={user ? <Product /> : <Navigate to={"/login"} replace />}
 			/>
 			<Route
-				path="/product"
-				element={user ? <Product /> : <Navigate to={"/login"} replace />}
+				path="/add-product"
+				element={user ? <AddProduct /> : <Navigate to={"/login"} replace />}
 			/>
 			<Route
-				path="/add-product"
+				path="/add-product/:id"
 				element={user ? <AddProduct /> : <Navigate to={"/login"} replace />}
 			/>
 			<Route
 				path="/profile"
 				element={user ? <Profile /> : <Navigate to={"/login"} replace />}
 			/>
-			<Route path="/login" element={<Login onLoginSuccess={() => {}} />} />
+			<Route path="/login" element={<Login onLoginSuccess={() => { }} />} />
 			<Route path="/*" element={<ErrorPage />} />
 			<Route path="/reset-password" element={<ResetPassword />} />
 		</Routes>

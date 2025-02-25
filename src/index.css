@@ -87,3 +87,35 @@ p {
 .pagination{
   @apply px-2 border-2 hover:bg-blue-500 hover:text-white rounded-lg cursor-pointer;
 }
+
+/* src/styles/global.css */
+
+@keyframes slideInFromRight {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 0.9; /* Adjusted opacity when entering */
+  }
+}
+
+@keyframes slideOutUp {
+  0% {
+    transform: translateY(0);
+    opacity: 0.9; /* Adjusted opacity when exiting */
+  }
+  100% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+
+.animate-slide-in {
+  animation: slideInFromRight 300ms ease-out forwards;
+}
+
+.animate-slide-out {
+  animation: slideOutUp 300ms ease-in forwards;
+}

@@ -1,11 +1,11 @@
 import axios from "axios";
 import CryptoJS from "crypto-js";
 
+const token = localStorage.getItem('token')
 const HTTPOFFICE: any = axios.create({
 	baseURL: import.meta.env.VITE_API_URL,
 	headers: {
-		"ngrok-skip-browser-warning": "true",
-		Authorization: "Bearer",
+		Authorization: `Bearer ${token}`,
 	},
 });
 
